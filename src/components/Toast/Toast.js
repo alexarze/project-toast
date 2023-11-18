@@ -9,9 +9,9 @@ import {
 
 import VisuallyHidden from '../VisuallyHidden';
 
-import styles from './Toast.module.css';
+import { ToastContext } from '../ToastProvider';
 
-const ToastContext = React.createContext();
+import styles from './Toast.module.css';
 
 const ICONS_BY_VARIANT = {
   notice: Info,
@@ -53,13 +53,4 @@ function Toast({ shown, onShownChange, variant, children }) {
   );
 }
 
-function ToastProvider({ children, ...delegated }) {
-  return (
-    <ToastContext.Provider value={{ ...delegated }}>
-      {children}
-    </ToastContext.Provider>
-  );
-}
-
 export default Toast;
-export { ToastProvider };

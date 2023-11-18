@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Button from '../Button';
-import Toast from '../Toast';
+
+import { ToastContext } from '../ToastProvider';
 
 import styles from './ToastPlayground.module.css';
 import ToastShelf from '../ToastShelf/ToastShelf';
@@ -14,8 +15,7 @@ function ToastPlayground() {
     VARIANT_OPTIONS[0]
   );
 
-  const [showToast, setShowToast] = React.useState(false);
-  const [toasts, setToasts] = React.useState([]);
+  const { addToast } = React.useContext(ToastContext);
 
   const refMessageInput = React.useRef();
 
@@ -23,23 +23,12 @@ function ToastPlayground() {
     e.preventDefault();
 
     // add toast
-    const newToasts = [
-      ...toasts,
-      { message: message, variant: selectedVariant, id: crypto.randomUUID() },
-    ];
-    setToasts(newToasts);
+    addToast(message, selectedVariant);
 
     // reset form
     setMessage('');
     setSelectedVariant(VARIANT_OPTIONS[0]);
     refMessageInput.current.focus();
-  }
-
-  function removeToast(id) {
-    const newToasts = toasts.filter((item) => {
-      return item.id !== id;
-    });
-    setToasts(newToasts);
   }
 
   return (
@@ -49,15 +38,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {/* <Toast
-        shown={showToast}
-        onShownChange={setShowToast}
-        variant={selectedVariant}
-      >
-        {message}
-      </Toast> */}
-
-      <ToastShelf toasts={toasts} onCloseToast={removeToast} />
+      <ToastShelf />
 
       <form className={styles.controlsWrapper} onSubmit={handleSubmit}>
         <div className={styles.row}>

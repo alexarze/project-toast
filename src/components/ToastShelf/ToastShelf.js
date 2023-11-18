@@ -3,7 +3,11 @@ import React from 'react';
 import Toast from '../Toast';
 import styles from './ToastShelf.module.css';
 
-function ToastShelf({ toasts, onCloseToast }) {
+import { ToastContext } from '../ToastProvider';
+
+function ToastShelf() {
+  const { toasts, removeToast } = React.useContext(ToastContext);
+
   return (
     <ol className={styles.wrapper}>
       {toasts.map((data) => {
@@ -11,7 +15,7 @@ function ToastShelf({ toasts, onCloseToast }) {
           <li className={styles.toastWrapper} key={data.id}>
             <Toast
               shown
-              onShownChange={() => onCloseToast(data.id)}
+              onShownChange={() => removeToast(data.id)}
               variant={data.variant}
             >
               {data.message}
@@ -21,21 +25,6 @@ function ToastShelf({ toasts, onCloseToast }) {
       })}
     </ol>
   );
-
-  // return (
-  //   <ol className={styles.wrapper}>
-  //     <li className={styles.toastWrapper}>
-  //       <Toast shown variant="notice">
-  //         Example notice toast
-  //       </Toast>
-  //     </li>
-  //     <li className={styles.toastWrapper}>
-  //       <Toast shown variant="error">
-  //         Example error toast
-  //       </Toast>
-  //     </li>
-  //   </ol>
-  // );
 }
 
 export default ToastShelf;
